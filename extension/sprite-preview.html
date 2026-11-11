@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Tab Zoo — 현재 동물 디자인</title>
+  <link rel="stylesheet" href="popup.css">
+  <style>
+    html,body{width:100%;height:auto;min-height:100%;overflow:auto}
+    body{margin:0;background:#15251d;color:#efffd8;font:12px Verdana,"Malgun Gothic",sans-serif}
+    main{width:min(880px,100%);padding:24px;margin:auto}
+    h1{margin:0 0 6px;font-size:17px}p{margin:0 0 22px;color:#a9bcae}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(255px,1fr));gap:16px}
+    figure{margin:0;background:#253b2f;border:1px solid #3b5041;padding:14px}
+    .pair{display:flex;align-items:end;justify-content:space-around;gap:12px;height:138px}
+    .sample{display:flex;flex-direction:column;align-items:center;gap:12px}
+    .pixel-sprite{position:relative;animation:none;transform:none;filter:saturate(1.34) brightness(1.05) drop-shadow(1px 0 #25382b) drop-shadow(-1px 0 #25382b) drop-shadow(0 1px #25382b)}
+    .new-art > svg{width:120px;height:108px;display:block;image-rendering:pixelated}
+    .sample small{font-size:10px;color:#a9bcae}
+    .new-art small{color:#e7d6a7}
+    figcaption{margin-top:18px;font-weight:700;font-size:12px}
+  </style>
+</head>
+<body>
+  <main>
+    <h1>한 마리씩, 새로 그린 동물들</h1>
+    <p>왼쪽은 기존 그림 · 오른쪽은 실루엣을 참고해 새로 그린 시안</p>
+    <section class="grid" id="grid"></section>
+  </main>
+  <script src="atlas-clips.js"></script>
+  <script src="sprite-art.js"></script>
+  <script>
+    const parts = '<i class="part tail one"></i><i class="part tail two"></i><i class="part neck"></i><i class="part body"></i><i class="part belly"></i><i class="part wing one"></i><i class="part wing two"></i><i class="part head"></i><i class="part snout"></i><i class="part ear one"></i><i class="part ear two"></i><i class="part horn one"></i><i class="part horn two"></i><i class="part arm one"></i><i class="part arm two"></i><i class="part leg one"></i><i class="part leg two"></i><i class="part leg three"></i><i class="part leg four"></i><i class="part mark one"></i><i class="part mark two"></i><i class="part eye one"></i><i class="part eye two"></i>';
+    const animals = [
+      ['sauropod','브라키오','#76b982','#4f8c64','#e5a54f'],
+      ['trex','티라노','#df7059','#a84c43','#f2c45e'],
+      ['triceratops','트리케라','#8eaed8','#607da9','#efe2aa'],
+      ['cat','고양이','#d99a58','#a86239','#f1d6a2'],
+      ['fox','사막여우','#dc7048','#a94435','#f4d79b'],
+      ['duck','오리','#e5c95a','#b29538','#e8893e'],
+      ['elephant','코끼리','#8798ad','#5f7188','#efe5c8']
+    ];
+    document.querySelector('#grid').innerHTML = animals.map((animal) => {
+      const [id, name, accent, shade, mark] = animal;
+      const art = spriteArt.find(a => a.id === id);
+      return `<figure><div class="pair"><div class="sample"><span class="pixel-sprite phase-adult" data-species="${id}" style="--accent:${accent};--shade:${shade};--mark:${mark};--hop-speed:999s">${parts}</span><small>기존</small></div><div class="sample new-art">${finishedSprite(art)}<small>새 시안</small></div></div><figcaption>${name}</figcaption></figure>`;
+    }).join('');
+  </script>
+</body>
+</html>

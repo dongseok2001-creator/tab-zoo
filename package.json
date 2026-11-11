@@ -1,0 +1,14 @@
+{
+  "name": "tab-zoo",
+  "version": "0.1.10",
+  "private": true,
+  "description": "열어 둔 브라우저 탭이 작은 도트 동물이 되어 자라는 Chrome 확장 프로그램",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "test": "node --test \"tests/extension-*.test.mjs\"",
+    "package:extension": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/package-extension.ps1"
+  }
+}

@@ -1,0 +1,23 @@
+# Build output
+/outputs/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Secrets
+.env*
+*.pem
+
+# Local leftovers from the archived web prototype (see archive/behavior-lab branch)
+/node_modules/
+/.npm-cache/
+/.next/
+/.vinext/
+/.wrangler/
+/dist/
+/work/
+/public/
+/app/_sites-preview/

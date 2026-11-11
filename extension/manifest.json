@@ -1,0 +1,33 @@
+{
+  "manifest_version": 3,
+  "name": "Tab Zoo",
+  "version": "0.1.10",
+  "description": "열린 탭의 사용 습관을 작은 도트 생물로 보여주는 로컬 탭 서식지",
+  "minimum_chrome_version": "121",
+  "permissions": [
+    "tabs",
+    "storage",
+    "favicon",
+    "idle",
+    "alarms"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "icons": {
+    "16": "assets/icon16.png",
+    "32": "assets/icon32.png",
+    "48": "assets/icon48.png",
+    "128": "assets/icon128.png"
+  },
+  "action": {
+    "default_title": "Tab Zoo 열기",
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "assets/icon16.png",
+      "32": "assets/icon32.png",
+      "48": "assets/icon48.png",
+      "128": "assets/icon128.png"
+    }
+  }
+}

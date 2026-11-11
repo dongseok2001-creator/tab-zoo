@@ -1,0 +1,36 @@
+/* Each animal is a finished 40 × 36 illustration with one continuous contour. */
+const spriteArt = [
+  {id:'sauropod',name:'브라키오',color:'#79bc70',shade:'#47864f',light:'#b9dc8d',ink:'#253a27',
+    outline:'M5 5H12V6H14V8H15V18H19V17H27V18H30V20H32V22H34V24H37V26H31V25H29V29H28V33H24V29H20V30H17V33H13V29H11V27H10V14H6V13H3V11H2V8H3V6H5Z',
+    patches:['M15 26H27V28H16V27H15Z'],
+    pale:'',eye:[6,7]},
+  {id:'trex',name:'티라노',color:'#e87959',shade:'#b34b3c',light:'#ffdda0',ink:'#482d27',
+    outline:'M5 8H15V9H17V12H18V17H21V18H24V21H28V23H31V24H34V23H36V21H38V26H36V28H31V29H26V31H27V33H21V29H17V30H16V33H10V31H12V26H10V21H7V19H3V17H2V11H3V9H5Z',
+    patches:['M12 21H14V23H17V25H14V24H12Z'],
+    pale:'M3 15H10V17H4V16H3Z',eye:[7,11]},
+  {id:'triceratops',name:'트리케라',color:'#80afe0',shade:'#507bab',light:'#f1dda2',ink:'#293b51',
+    outline:'M11 10H15V11H18V14H27V15H30V18H31V22H35V24H38V26H31V29H29V33H25V30H19V33H15V29H11V28H8V26H4V25H2V22H3V20H6V16H5V11H7V14H10V10H9V7H11Z',
+    patches:['M14 12H16V15H18V24H16V27H13V25H15V22H16V17H14Z','M23 24H30V28H27V30H25V28H22Z'],
+    pale:'M5 12H6V15H8V18H6V16H5Z M10 8H11V12H13V15H11V13H10Z',eye:[8,19]},
+  {id:'cat',name:'고양이',color:'#e8aa50',shade:'#b37432',light:'#ffe0a0',ink:'#493422',
+    outline:'M5 10H7V12H10V13H13V11H15V10H17V17H19V18H26V20H29V24H32V22H33V15H35V13H38V16H36V25H35V28H31V29H28V32H24V30H19V32H15V29H12V27H10V24H6V23H4V21H3V17H4V13H5Z',
+    patches:['M23 19H25V23H23Z M27 21H29V25H27Z','M31 26H35V28H31V29H28V31H25V29H28V27H31Z'],
+    pale:'M5 20H8V21H13V20H15V23H13V25H9V23H6V22H5Z',eye:[6,17],eye2:[12,17]},
+  {id:'fox',name:'사막여우',color:'#e98543',shade:'#b35430',light:'#ffe2ab',ink:'#482c24',
+    outline:'M6 4H8V6H10V9H11V12H13V8H15V4H17V11H16V16H18V19H24V20H27V23H29V22H30V19H32V16H35V14H38V20H37V24H35V27H32V29H28V30H27V33H24V29H18V30H17V33H14V28H12V25H10V23H7V22H4V21H1V19H4V18H6V16H7V13H6Z',
+    patches:['M7 7H8V9H9V13H8V12H7Z M15 8H16V12H15V14H14V11H15Z','M29 26H34V27H32V29H28V30H26V28H29Z'],
+    pale:'M3 19H7V20H10V19H12V22H15V25H13V24H10V23H7V22H4V21H3Z M34 17H36V15H38V19H37V22H35V21H33V19H34Z',eye:[8,16],nose:[1,19]},
+  {id:'duck',name:'오리',color:'#f1cf4e',shade:'#bd9230',light:'#fff0aa',ink:'#4c3b22',
+    outline:'M10 7H16V8H19V10H20V15H19V18H23V19H28V21H32V19H35V18H37V22H35V25H33V27H30V29H25V30H24V33H19V31H21V30H17V33H12V31H14V29H10V27H8V24H7V20H4V19H2V17H3V15H7V10H8V8H10Z',
+    patches:['M20 21H28V22H30V24H28V26H23V27H19V25H18V23H20Z'],
+    pale:'M8 18H11V21H13V25H11V24H9V21H8Z',eye:[11,12],bill:'M3 16H9V18H6V19H3Z'},
+  {id:'elephant',name:'코끼리',color:'#91a9ca',shade:'#607b9e',light:'#d6e1e6',ink:'#2b364a',
+    outline:'M8 11H18V13H30V15H32V28H31V32H26V28H21V32H16V28H13V25H11V22H8V30H5V15H6V12H8Z',
+    patches:['M14 13H18V15H20V20H19V24H16V25H13V23H12V16H14Z','M24 25H30V28H28V30H26V28H23Z'],
+    pale:'M14 15H17V16H15V21H14Z',eye:[8,17]}
+];
+function finishedSprite(a, palette){
+  a = { ...a, ...palette };
+  const rect=([x,y])=>`<rect class="sprite-eye" x="${x}" y="${y}" width="2" height="3" fill="${a.ink}"/>`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 36" shape-rendering="crispEdges" role="img" aria-label="${a.name}"><path d="${a.outline}" fill="${a.color}" stroke="${a.ink}" stroke-width="1" stroke-linejoin="miter"/>${a.patches.map(d=>`<path d="${d}" fill="${a.shade}"/>`).join('')}<path d="${a.pale}" fill="${a.light}"/>${a.bill?`<path d="${a.bill}" fill="#e79a32"/>`:''}${rect(a.eye)}${a.eye2?rect(a.eye2):''}${a.nose?`<rect x="${a.nose[0]}" y="${a.nose[1]}" width="2" height="2" fill="${a.ink}"/>`:''}</svg>`;
+}

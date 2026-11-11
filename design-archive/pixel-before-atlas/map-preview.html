@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tab Zoo — 맵·움직임 미리보기</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <main class="popup-shell">
+      <header class="topbar">
+        <div class="brand">
+          <span class="brand-mark">TZ</span>
+          <div><small>TAB HABITAT</small><h1>TAB ZOO</h1></div>
+        </div>
+        <div class="tab-count"><i></i><span id="tab-count">탭 확인 중</span></div>
+      </header>
+
+      <section class="map-frame" aria-label="열린 탭 생물 지도">
+        <div class="map-label">CURRENT WINDOW · HOVER TO INSPECT · CLICK TO OPEN</div>
+        <div class="zoo-map" id="zoo-map" data-theme="meadow">
+          <button id="toggle-eggs" class="egg-toggle" type="button" aria-pressed="false">알 숨기기</button>
+          <label class="map-theme-control">
+            <span class="sr-only">맵 선택</span>
+            <select id="map-theme" aria-label="맵 선택">
+              <option value="meadow">초원</option>
+              <option value="siberia">시베리아</option>
+              <option value="desert">사막</option>
+            </select>
+          </label>
+          <div class="map-path path-main" aria-hidden="true"></div>
+          <div class="map-path path-branch" aria-hidden="true"></div>
+          <div class="map-water" aria-hidden="true"><i></i><i></i><i></i></div>
+          <div class="map-sand" aria-hidden="true"></div>
+          <i class="map-tree tree-a" aria-hidden="true"></i>
+          <i class="map-tree tree-b" aria-hidden="true"></i>
+          <i class="map-tree tree-c" aria-hidden="true"></i>
+          <i class="map-tree tree-d theme-extra" aria-hidden="true"></i>
+          <i class="map-tree tree-e theme-extra" aria-hidden="true"></i>
+          <i class="map-rock rock-a" aria-hidden="true"></i>
+          <i class="map-rock rock-b" aria-hidden="true"></i>
+          <div id="creatures"><article class="creature   " style="--x:8%;--y:13%;--dx:24px;--dy:12px;--hit-w:52px;--hit-h:38px;--hit-y:0px;--label-bottom:-22px;--delay:-0s;--accent:#1db954;--shade:#00710c;--mark:#72ffa9;--scale:0.480;--egg-scale:0.300;--width-ratio:1.000;--hop-speed:2.00s;--roam-speed:10.0s;--drowsy-drop:0.00px;--drowsy-tilt:0.00deg;--drowsy-eye-scale:1.000" ><button class="creature-button" style="" aria-label="Spotify 브라키오, spotify.com 탭 열기">
+    <span class="sprite-stage"><span class="sprite-scale "><span class="pixel-sprite finished-sprite phase-adult  " data-species="sauropod"><span class="sprite-facing"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 36" shape-rendering="crispEdges" role="img" aria-label="브라키오"><path d="M5 5H12V6H14V8H15V18H19V17H27V18H30V20H32V22H34V24H37V26H31V25H29V29H28V33H24V29H20V30H17V33H13V29H11V27H10V14H6V13H3V11H2V8H3V6H5Z" fill="#1db954" stroke="#002800" stroke-width="1" stroke-linejoin="miter"/><path d="M15 26H27V28H16V27H15Z" fill="#00710c"/><path d="" fill="#72ffa9"/><rect class="sprite-eye" x="6" y="7" width="2" height="3" fill="#002800"/></svg></span><i class="sleep-puff" aria-hidden="true">Z</i></span></span></span>
+    <span class="creature-name">Spotify 브라키오</span></button></article><article class="creature   " style="--x:59%;--y:10%;--dx:36px;--dy:12px;--hit-w:52px;--hit-h:38px;--hit-y:0px;--label-bottom:-22px;--delay:-2.1s;--accent:#ff3b32;--shade:#b70000;--mark:#ff9087;--scale:0.480;--egg-scale:0.300;--width-ratio:1.000;--hop-speed:2.00s;--roam-speed:10.0s;--drowsy-drop:0.00px;--drowsy-tilt:0.00deg;--drowsy-eye-scale:1.000" ><button class="creature-button" style="" aria-label="YouTube 티라노, youtube.com 탭 열기">
+    <span class="sprite-stage"><span class="sprite-scale "><span class="pixel-sprite finished-sprite phase-adult  " data-species="trex"><span class="sprite-facing"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 36" shape-rendering="crispEdges" role="img" aria-label="티라노"><path d="M5 8H15V9H17V12H18V17H21V18H24V21H28V23H31V24H34V23H36V21H38V26H36V28H31V29H26V31H27V33H21V29H17V30H16V33H10V31H12V26H10V21H7V19H3V17H2V11H3V9H5Z" fill="#ff3b32" stroke="#6e0000" stroke-width="1" stroke-linejoin="miter"/><path d="M12 21H14V23H17V25H14V24H12Z" fill="#b70000"/><path d="M3 15H10V17H4V16H3Z" fill="#ff9087"/><rect class="sprite-eye" x="7" y="11" width="2" height="3" fill="#6e0000"/></svg></span><i class="sleep-puff" aria-hidden="true">Z</i></span></span></span>
+    <span class="creature-name">YouTube 티라노</span></button></article><article class="creature   active" style="--x:35%;--y:29%;--dx:36px;--dy:12px;--hit-w:52px;--hit-h:38px;--hit-y:0px;--label-bottom:-22px;--delay:-4.2s;--accent:#4285f4;--shade:#003dac;--mark:#97daff;--scale:0.480;--egg-scale:0.300;--width-ratio:1.000;--hop-speed:2.00s;--roam-speed:10.0s;--drowsy-drop:0.00px;--drowsy-tilt:0.00deg;--drowsy-eye-scale:1.000" ><button class="creature-button" style="" aria-label="Google 오리, google.com 탭 열기">
+    <span class="sprite-stage"><span class="sprite-scale "><span class="pixel-sprite finished-sprite phase-adult  " data-species="duck"><span class="sprite-facing"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 36" shape-rendering="crispEdges" role="img" aria-label="오리"><path d="M10 7H16V8H19V10H20V15H19V18H23V19H28V21H32V19H35V18H37V22H35V25H33V27H30V29H25V30H24V33H19V31H21V30H17V33H12V31H14V29H10V27H8V24H7V20H4V19H2V17H3V15H7V10H8V8H10Z" fill="#4285f4" stroke="#000063" stroke-width="1" stroke-linejoin="miter"/><path d="M20 21H28V22H30V24H28V26H23V27H19V25H18V23H20Z" fill="#003dac"/><path d="M8 18H11V21H13V25H11V24H9V21H8Z" fill="#97daff"/><path d="M3 16H9V18H6V19H3Z" fill="#e79a32"/><rect class="sprite-eye" x="11" y="12" width="2" height="3" fill="#000063"/></svg></span><i class="sleep-puff" aria-hidden="true">Z</i></span></span></span>
+    <span class="creature-name">Google 오리</span></button></article><article class="creature   " style="--x:9%;--y:52%;--dx:24px;--dy:12px;--hit-w:52px;--hit-h:38px;--hit-y:0px;--label-bottom:-22px;--delay:-6.300000000000001s;--accent:#ff702d;--shade:#b72800;--mark:#ffc582;--scale:0.480;--egg-scale:0.300;--width-ratio:1.000;--hop-speed:2.00s;--roam-speed:10.0s;--drowsy-drop:0.00px;--drowsy-tilt:0.00deg;--drowsy-eye-scale:1.000" ><button class="creature-button" style="" aria-label="Reddit 사막여우, reddit.com 탭 열기">
+    <span class="sprite-stage"><span class="sprite-scale "><span class="pixel-sprite finished-sprite phase-adult  " data-species="fox"><span class="sprite-facing"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 36" shape-rendering="crispEdges" role="img" aria-label="사막여우"><path d="M6 4H8V6H10V9H11V12H13V8H15V4H17V11H16V16H18V19H24V20H27V23H29V22H30V19H32V16H35V14H38V20H37V24H35V27H32V29H28V30H27V33H24V29H18V30H17V33H14V28H12V25H10V23H7V22H4V21H1V19H4V18H6V16H7V13H6Z" fill="#ff702d" stroke="#6e0000" stroke-width="1" stroke-linejoin="miter"/><path d="M7 7H8V9H9V13H8V12H7Z M15 8H16V12H15V14H14V11H15Z" fill="#b72800"/><path d="M29 26H34V27H32V29H28V30H26V28H29Z" fill="#b72800"/><path d="M3 19H7V20H10V19H12V22H15V25H13V24H10V23H7V22H4V21H3Z M34 17H36V15H38V19H37V22H35V21H33V19H34Z" fill="#ffc582"/><rect class="sprite-eye" x="8" y="16" width="2" height="3" fill="#6e0000"/><rect x="1" y="19" width="2" height="2" fill="#6e0000"/></svg></span><i class="sleep-puff" aria-hidden="true">Z</i></span></span></span>
+    <span class="creature-name">Reddit 사막여우</span></button></article><article class="creature   " style="--x:43%;--y:54%;--dx:36px;--dy:12px;--hit-w:52px;--hit-h:38px;--hit-y:0px;--label-bottom:-22px;--delay:-8.4s;--accent:#777782;--shade:#2f2f3a;--mark:#ccccd7;--scale:0.480;--egg-scale:0.300;--width-ratio:1.000;--hop-speed:2.00s;--roam-speed:10.0s;--drowsy-drop:0.00px;--drowsy-tilt:0.00deg;--drowsy-eye-scale:1.000" ><button class="creature-button" style="" aria-label="GitHub 트리케라, github.com 탭 열기">
+    <span class="sprite-stage"><span class="sprite-scale "><span class="pixel-sprite finished-sprite phase-adult  " data-species="triceratops"><span class="sprite-facing"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 36" shape-rendering="crispEdges" role="img" aria-label="트리케라"><path d="M11 10H15V11H18V14H27V15H30V18H31V22H35V24H38V26H31V29H29V33H25V30H19V33H15V29H11V28H8V26H4V25H2V22H3V20H6V16H5V11H7V14H10V10H9V7H11Z" fill="#777782" stroke="#000000" stroke-width="1" stroke-linejoin="miter"/><path d="M14 12H16V15H18V24H16V27H13V25H15V22H16V17H14Z" fill="#2f2f3a"/><path d="M23 24H30V28H27V30H25V28H22Z" fill="#2f2f3a"/><path d="M5 12H6V15H8V18H6V16H5Z M10 8H11V12H13V15H11V13H10Z" fill="#ccccd7"/><rect class="sprite-eye" x="8" y="19" width="2" height="3" fill="#000000"/></svg></span><i class="sleep-puff" aria-hidden="true">Z</i></span></span></span>
+    <span class="creature-name">GitHub 트리케라</span></button></article><article class="creature   " style="--x:68%;--y:44%;--dx:24px;--dy:12px;--hit-w:52px;--hit-h:38px;--hit-y:0px;--label-bottom:-22px;--delay:-10.5s;--accent:#5865f2;--shade:#101daa;--mark:#adbaff;--scale:0.480;--egg-scale:0.300;--width-ratio:1.000;--hop-speed:2.00s;--roam-speed:10.0s;--drowsy-drop:0.00px;--drowsy-tilt:0.00deg;--drowsy-eye-scale:1.000" ><button class="creature-button" style="" aria-label="Discord 코끼리, discord.com 탭 열기">
+    <span class="sprite-stage"><span class="sprite-scale "><span class="pixel-sprite finished-sprite phase-adult  " data-species="elephant"><span class="sprite-facing"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 36" shape-rendering="crispEdges" role="img" aria-label="코끼리"><path d="M8 11H18V13H30V15H32V28H31V32H26V28H21V32H16V28H13V25H11V22H8V30H5V15H6V12H8Z" fill="#5865f2" stroke="#000061" stroke-width="1" stroke-linejoin="miter"/><path d="M14 13H18V15H20V20H19V24H16V25H13V23H12V16H14Z" fill="#101daa"/><path d="M24 25H30V28H28V30H26V28H23Z" fill="#101daa"/><path d="M14 15H17V16H15V21H14Z" fill="#adbaff"/><rect class="sprite-eye" x="8" y="17" width="2" height="3" fill="#000061"/></svg></span><i class="sleep-puff" aria-hidden="true">Z</i></span></span></span>
+    <span class="creature-name">Discord 코끼리</span></button></article><article class="creature  asleep " style="--x:34%;--y:0%;--dx:36px;--dy:12px;--hit-w:52px;--hit-h:38px;--hit-y:10px;--label-bottom:-12px;--delay:-12.600000000000001s;--accent:#e4e4dc;--shade:#9c9c94;--mark:#ffffff;--scale:0.480;--egg-scale:0.300;--width-ratio:1.000;--hop-speed:2.00s;--roam-speed:10.0s;--drowsy-drop:0.00px;--drowsy-tilt:0.00deg;--drowsy-eye-scale:1.000" ><button class="creature-button" style="" aria-label="Notion 고양이, notion.com 탭 열기">
+    <span class="sprite-stage"><span class="sprite-scale "><span class="pixel-sprite finished-sprite phase-adult  sleeping" data-species="cat"><span class="sprite-facing"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 36" shape-rendering="crispEdges" role="img" aria-label="고양이"><path d="M5 10H7V12H10V13H13V11H15V10H17V17H19V18H26V20H29V24H32V22H33V15H35V13H38V16H36V25H35V28H31V29H28V32H24V30H19V32H15V29H12V27H10V24H6V23H4V21H3V17H4V13H5Z" fill="#e4e4dc" stroke="#53534b" stroke-width="1" stroke-linejoin="miter"/><path d="M23 19H25V23H23Z M27 21H29V25H27Z" fill="#9c9c94"/><path d="M31 26H35V28H31V29H28V31H25V29H28V27H31Z" fill="#9c9c94"/><path d="M5 20H8V21H13V20H15V23H13V25H9V23H6V22H5Z" fill="#ffffff"/><rect class="sprite-eye" x="6" y="17" width="2" height="3" fill="#53534b"/><rect class="sprite-eye" x="12" y="17" width="2" height="3" fill="#53534b"/></svg></span><i class="sleep-puff" aria-hidden="true">Z</i></span></span></span>
+    <span class="creature-name">Notion 고양이</span></button></article></div>
+          <div class="empty-state" id="empty-state" hidden>
+            <b>서식지가 비어 있습니다</b>
+            <span>웹 탭을 선택하거나 새로 열면 이곳에 알이 생깁니다.</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="observer">
+        <div class="observed-site">
+          <img id="observed-favicon" alt="" />
+        </div>
+        <div class="observer-copy">
+          <div class="observer-title">
+            <h2 id="observed-name">Google 오리</h2>
+            <span id="observed-domain"></span>
+          </div>
+          <p id="observed-summary" aria-live="polite">납작한 부리와 작은 날개를 흔들며 뒤뚱뒤뚱 걷는 오리입니다.</p>
+        </div>
+        <div class="observer-tools">
+          <button id="reset-zoo" type="button" title="모든 동물과 기록 삭제" aria-label="모든 동물과 기록 삭제">↻</button>
+        </div>
+      </section>
+
+      <footer><span>데이터는 이 브라우저에만 저장됩니다</span><b>v0.1.9 POPUP</b></footer>
+    </main>
+    <script src="sprite-art.js"></script>
+    
+  </body>
+</html>

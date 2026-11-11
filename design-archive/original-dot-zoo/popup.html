@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tab Zoo</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <main class="popup-shell">
+      <header class="topbar">
+        <div class="brand">
+          <span class="brand-mark">TZ</span>
+          <div><small>TAB HABITAT</small><h1>TAB ZOO</h1></div>
+        </div>
+        <div class="tab-count"><i></i><span id="tab-count">탭 확인 중</span></div>
+      </header>
+
+      <section class="map-frame" aria-label="열린 탭 생물 지도">
+        <div class="map-label">CURRENT WINDOW · HOVER TO INSPECT · CLICK TO OPEN</div>
+        <div class="zoo-map" id="zoo-map">
+          <button id="toggle-eggs" class="egg-toggle" type="button" aria-pressed="false">알 숨기기</button>
+          <label class="map-theme-control">
+            <span class="sr-only">맵 선택</span>
+            <select id="map-theme" aria-label="맵 선택">
+              <option value="meadow">초원</option>
+              <option value="siberia">시베리아</option>
+              <option value="desert">사막</option>
+            </select>
+          </label>
+          <div class="map-path path-main" aria-hidden="true"></div>
+          <div class="map-path path-branch" aria-hidden="true"></div>
+          <div class="map-water" aria-hidden="true"><i></i><i></i><i></i></div>
+          <div class="map-sand" aria-hidden="true"></div>
+          <i class="map-tree tree-a" aria-hidden="true"></i>
+          <i class="map-tree tree-b" aria-hidden="true"></i>
+          <i class="map-tree tree-c" aria-hidden="true"></i>
+          <i class="map-tree tree-d theme-extra" aria-hidden="true"></i>
+          <i class="map-tree tree-e theme-extra" aria-hidden="true"></i>
+          <i class="map-rock rock-a" aria-hidden="true"></i>
+          <i class="map-rock rock-b" aria-hidden="true"></i>
+          <div id="creatures"></div>
+          <div class="empty-state" id="empty-state" hidden>
+            <b>서식지가 비어 있습니다</b>
+            <span>웹 탭을 선택하거나 새로 열면 이곳에 알이 생깁니다.</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="observer">
+        <div class="observed-site">
+          <img id="observed-favicon" alt="" />
+        </div>
+        <div class="observer-copy">
+          <div class="observer-title">
+            <h2 id="observed-name">생물을 가리켜 보세요</h2>
+            <span id="observed-domain"></span>
+          </div>
+          <p id="observed-summary" aria-live="polite">동물을 가리키면 이곳에 특징과 현재 모습을 보여줍니다.</p>
+        </div>
+        <div class="observer-tools">
+          <button id="reset-zoo" type="button" title="모든 동물과 기록 삭제" aria-label="모든 동물과 기록 삭제">↻</button>
+        </div>
+      </section>
+
+      <footer><span>데이터는 이 브라우저에만 저장됩니다</span><b>v0.1.9 POPUP</b></footer>
+    </main>
+    <script src="popup.js"></script>
+  </body>
+</html>

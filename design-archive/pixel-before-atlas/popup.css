@@ -1,0 +1,659 @@
+:root {
+  --ink: #e9f7e9;
+  --muted: #809487;
+  --line: rgba(171, 222, 180, 0.17);
+  --lime: #c8ef68;
+  --cyan: #6dd8c8;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html, body { width: 320px; height: 300px; margin: 0; overflow: hidden; }
+body { background: #000; color: var(--ink); font-family: Arial, Helvetica, sans-serif; }
+button { font: inherit; color: inherit; }
+
+.popup-shell {
+  width: 320px;
+  height: 300px;
+  padding: 8px;
+  background: #000;
+}
+.topbar, .brand, .tab-count, .observed-site, footer { display: flex; align-items: center; }
+.topbar { display: none; }
+.brand { gap: 9px; }
+.brand-mark { display: grid; place-items: center; width: 36px; height: 36px; border: 1px solid var(--lime); color: var(--lime); font: 900 11px/1 monospace; box-shadow: inset 0 0 0 3px #07110f, inset 0 0 0 4px rgba(200, 239, 104, 0.28); }
+.brand small { display: block; margin-bottom: 3px; color: var(--cyan); font: 700 8px/1 monospace; letter-spacing: 0.15em; }
+.brand h1 { margin: 0; font-size: 17px; letter-spacing: 0.05em; }
+.tab-count { gap: 7px; padding: 8px 10px; border: 1px solid var(--line); color: #b1c6b6; font: 9px/1 monospace; }
+.tab-count i { width: 6px; height: 6px; background: var(--lime); box-shadow: 0 0 8px var(--lime); }
+
+.map-frame { position: relative; height: 200px; padding: 0; border: 1px solid #333; background: #0b1714; }
+.map-label { display: none; }
+.zoo-map {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  isolation: isolate;
+  background:
+    radial-gradient(circle at 13% 67%, rgba(190, 207, 157, 0.09) 0 2px, transparent 3px) 0 0 / 67px 53px,
+    radial-gradient(circle at 62% 24%, rgba(24, 43, 30, 0.18) 0 3px, transparent 4px) 0 0 / 91px 71px,
+    #455640;
+  box-shadow: inset 0 0 0 4px #2f4234, inset 0 0 0 7px #63765a;
+  image-rendering: pixelated;
+}
+.map-theme-control { position:absolute; z-index:40; right:10px; bottom:10px; }
+.map-theme-control select { width:72px; height:24px; padding:0 3px; border:1px solid rgba(223,244,218,.55); background:rgba(7,17,14,.9); color:#efffe8; font:800 11px/1 monospace; box-shadow:2px 2px 0 rgba(7,17,14,.32); }
+.map-theme-control select:hover,.map-theme-control select:focus-visible { border-color:var(--lime); outline:0; }
+.egg-toggle { position:absolute; z-index:40; left:10px; bottom:10px; height:20px; padding:0 6px; border:1px solid rgba(223,244,218,.42); background:rgba(7,17,14,.86); color:#d6e7d1; font:700 8px/1 monospace; cursor:pointer; box-shadow:2px 2px 0 rgba(7,17,14,.25); }
+.egg-toggle:hover,.egg-toggle:focus-visible { border-color:var(--lime); color:#efffe8; outline:0; }
+.egg-toggle[aria-pressed="true"] { border-color:var(--lime); background:#17251d; color:var(--lime); }
+.map-path { position: absolute; z-index: 1; background: #756b50; box-shadow: inset 0 6px #8e815e, inset 0 -6px #554d3b; }
+.path-main { left: -2%; top: 49%; width: 104%; height: 54px; }
+.path-branch { left: 57%; top: 0; width: 45px; height: 55%; box-shadow: inset 6px 0 #8e815e, inset -6px 0 #554d3b; }
+.map-water { position: absolute; z-index: 2; left: 4%; top: 7%; width: 24%; height: 28%; clip-path: polygon(12% 0, 86% 0, 86% 8%, 96% 8%, 96% 22%, 100% 22%, 100% 78%, 91% 78%, 91% 92%, 76% 92%, 76% 100%, 17% 100%, 17% 94%, 6% 94%, 6% 81%, 0 81%, 0 22%, 6% 22%, 6% 8%, 12% 8%); background: repeating-linear-gradient(0deg, transparent 0 13px, rgba(192,221,211,.16) 13px 16px), #3f5e68; box-shadow: inset 7px 7px #587b7d, inset -7px -7px #2b4650; }
+.map-water i { position: absolute; height: 3px; background: #9bb4a9; opacity: .55; }
+.map-water i:nth-child(1) { left: 17%; top: 25%; width: 28%; }
+.map-water i:nth-child(2) { right: 11%; top: 57%; width: 35%; }
+.map-water i:nth-child(3) { left: 28%; bottom: 16%; width: 19%; }
+.map-sand { position: absolute; z-index: 2; right: 4%; bottom: 5%; width: 22%; height: 22%; clip-path: polygon(14% 0, 82% 0, 82% 8%, 94% 8%, 94% 20%, 100% 20%, 100% 82%, 91% 82%, 91% 93%, 76% 93%, 76% 100%, 17% 100%, 17% 94%, 7% 94%, 7% 82%, 0 82%, 0 23%, 7% 23%, 7% 9%, 14% 9%); background: #756d50; box-shadow: inset 6px 6px #8f8563, inset -6px -6px #5d563f; }
+.map-tree { position: absolute; z-index: 4; width: 10px; height: 20px; background: #4d4233; box-shadow: inset -4px 0 #302c25; }
+.map-tree::before { content: ""; position: absolute; left: -10px; bottom: 13px; width: 31px; height: 35px; clip-path: polygon(25% 0,75% 0,75% 10%,89% 10%,89% 22%,100% 22%,100% 72%,87% 72%,87% 86%,70% 86%,70% 100%,27% 100%,27% 92%,12% 92%,12% 78%,0 78%,0 25%,12% 25%,12% 11%,25% 11%); background: #274735; box-shadow: inset -7px -6px #1b3428, inset 5px 5px #3b6541; }
+.tree-a { left: 39%; top: 10%; }
+.tree-b { right: 9%; top: 12%; transform: scale(1.15); }
+.tree-c { left: 9%; bottom: 7%; transform: scale(.85); }
+.theme-extra { display:none; }
+.map-rock { position: absolute; z-index: 3; width: 22px; height: 15px; clip-path: polygon(20% 0,78% 0,78% 17%,92% 17%,92% 40%,100% 40%,100% 100%,0 100%,0 44%,8% 44%,8% 17%,20% 17%); background: #536258; box-shadow: inset 4px 4px #718075, inset -5px -4px #35463e; }
+.rock-a { left: 34%; bottom: 11%; }
+.rock-b { right: 33%; top: 14%; transform: scale(.75); }
+
+/* Siberian ice field */
+.zoo-map[data-theme="siberia"] { background:radial-gradient(circle at 13% 67%,rgba(225,243,246,.15) 0 2px,transparent 3px) 0 0/53px 43px,radial-gradient(circle at 62% 24%,rgba(38,60,70,.18) 0 3px,transparent 4px) 0 0/79px 61px,#586d77; box-shadow:inset 0 0 0 4px #374c58,inset 0 0 0 7px #81949d; }
+.zoo-map[data-theme="siberia"] .map-path { display:none; }
+.zoo-map[data-theme="siberia"] .path-main { top:39%; height:43px; }
+.zoo-map[data-theme="siberia"] .path-branch { left:68%; width:38px; height:64%; box-shadow:inset 5px 0 #929fa6,inset -5px 0 #515c64; }
+.zoo-map[data-theme="siberia"] .map-water { left:-2%;top:37%;width:104%;height:29%;clip-path:polygon(0 18%,6% 18%,6% 8%,18% 8%,18% 0,34% 0,34% 10%,49% 10%,49% 18%,63% 18%,63% 8%,79% 8%,79% 15%,100% 15%,100% 82%,90% 82%,90% 92%,72% 92%,72% 100%,53% 100%,53% 90%,34% 90%,34% 100%,17% 100%,17% 91%,6% 91%,6% 82%,0 82%);background:repeating-linear-gradient(0deg,transparent 0 13px,rgba(231,252,255,.3) 13px 16px),#6c9daf;box-shadow:inset 0 7px #a4c8d0,inset 0 -7px #486979; }
+.zoo-map[data-theme="siberia"] .map-water i { background:#e1f2f4; opacity:.8; }
+.zoo-map[data-theme="siberia"] .map-sand { right:4%;top:7%;bottom:auto;width:39%;height:23%;clip-path:polygon(8% 0,72% 0,72% 8%,88% 8%,88% 18%,100% 18%,100% 84%,91% 84%,91% 94%,70% 94%,70% 100%,13% 100%,13% 93%,4% 93%,4% 82%,0 82%,0 21%,5% 21%,5% 8%,8% 8%);background:#a5b8bf;box-shadow:inset 6px 6px #cedadd,inset -6px -6px #7a909a; }
+.zoo-map[data-theme="siberia"] .map-tree { width:8px;height:22px;background:#413d3a;box-shadow:inset -3px 0 #2b2928; }
+.zoo-map[data-theme="siberia"] .map-tree::before { left:-11px;bottom:13px;width:31px;height:40px;clip-path:polygon(12px 0,18px 0,18px 6px,22px 6px,22px 11px,26px 11px,26px 17px,22px 17px,22px 20px,29px 20px,29px 27px,23px 27px,23px 30px,31px 30px,31px 37px,19px 37px,19px 40px,10px 40px,10px 37px,0 37px,0 30px,8px 30px,8px 27px,3px 27px,3px 20px,10px 20px,10px 17px,6px 17px,6px 11px,10px 11px,10px 6px,12px 6px);background:#294750;box-shadow:inset -6px -5px #1d343d,inset 4px 4px #466773; }
+.zoo-map[data-theme="siberia"] .map-tree::after { content:"";position:absolute;z-index:2;left:-2px;bottom:45px;width:12px;height:3px;background:#e2eff1;box-shadow:-5px 8px 0 #d9e9ec,6px 8px 0 #d9e9ec,-8px 15px 0 #c8dce1,9px 15px 0 #c8dce1; }
+.zoo-map[data-theme="siberia"] .theme-extra { display:block; }
+.zoo-map[data-theme="siberia"] .tree-a { left:10%;top:12%;transform:scale(.88); }.zoo-map[data-theme="siberia"] .tree-b { right:12%;top:auto;bottom:4%;transform:scale(1.08); }.zoo-map[data-theme="siberia"] .tree-c { left:72%;top:12%;bottom:auto;transform:scale(.82); }.zoo-map[data-theme="siberia"] .tree-d { left:34%;bottom:6%;transform:scale(.76); }.zoo-map[data-theme="siberia"] .tree-e { left:51%;top:14%;transform:scale(.7); }
+.zoo-map[data-theme="siberia"] .map-rock { background:#667780;box-shadow:inset 4px 4px #8b9ba2,inset -5px -4px #43545d; }
+.zoo-map[data-theme="siberia"] .rock-a { left:47%;bottom:9%; }.zoo-map[data-theme="siberia"] .rock-b { right:43%;top:10%; }
+.zoo-map[data-theme="siberia"] .empty-state { background:rgba(62,82,92,.78); }
+.zoo-map[data-theme="siberia"]::before { content:"";position:absolute;z-index:1;inset:8px;pointer-events:none;background:linear-gradient(90deg,transparent 0 15%,rgba(222,241,244,.13) 15% 16%,transparent 16% 44%,rgba(222,241,244,.1) 44% 45%,transparent 45% 74%,rgba(222,241,244,.12) 74% 75%,transparent 75%),linear-gradient(0deg,transparent 0 22%,rgba(43,68,79,.13) 22% 23%,transparent 23% 79%,rgba(43,68,79,.11) 79% 80%,transparent 80%); }
+
+/* Warm dusk desert */
+.zoo-map[data-theme="desert"] { background:radial-gradient(circle at 13% 67%,rgba(241,205,145,.15) 0 2px,transparent 3px) 0 0/67px 53px,radial-gradient(circle at 62% 24%,rgba(83,54,39,.14) 0 3px,transparent 4px) 0 0/91px 71px,#7a6049;box-shadow:inset 0 0 0 4px #5a4435,inset 0 0 0 7px #9b7957; }
+.zoo-map[data-theme="desert"] .map-path { display:none; }
+.zoo-map[data-theme="desert"] .path-main { top:58%; height:47px; }.zoo-map[data-theme="desert"] .path-branch { left:20%;width:38px;height:62%;box-shadow:inset 6px 0 #a9875e,inset -6px 0 #604837; }
+.zoo-map[data-theme="desert"] .map-water { left:7%;top:71%;width:18%;height:15%;clip-path:polygon(14% 0,82% 0,82% 10%,94% 10%,94% 24%,100% 24%,100% 77%,90% 77%,90% 91%,76% 91%,76% 100%,18% 100%,18% 93%,7% 93%,7% 80%,0 80%,0 25%,7% 25%,7% 10%,14% 10%);background:repeating-linear-gradient(0deg,transparent 0 10px,rgba(197,228,211,.2) 10px 13px),#3f6c6c;box-shadow:inset 5px 5px #638d80,inset -5px -5px #294b50; }
+.zoo-map[data-theme="desert"] .map-water i { background:#a8c5ad; opacity:.52; }
+.zoo-map[data-theme="desert"] .map-sand { right:-3%;top:8%;bottom:auto;width:67%;height:38%;clip-path:polygon(7% 0,76% 0,76% 7%,90% 7%,90% 15%,100% 15%,100% 85%,93% 85%,93% 93%,80% 93%,80% 100%,10% 100%,10% 94%,3% 94%,3% 84%,0 84%,0 18%,3% 18%,3% 8%,7% 8%);background:linear-gradient(180deg,#bb925f 0 22%,#aa8153 22% 47%,#98714a 47% 72%,#805d40 72% 100%);box-shadow:inset 6px 6px #c8a16b,inset -6px -6px #6e4f38; }
+.zoo-map[data-theme="desert"] .map-sand::before { content:"";position:absolute;left:7%;top:16%;width:62%;height:10px;background:#d0aa72;clip-path:polygon(0 60%,13% 60%,13% 30%,29% 30%,29% 0,54% 0,54% 25%,73% 25%,73% 50%,100% 50%,100% 100%,0 100%);box-shadow:35px 18px 0 #b78a59,12px 36px 0 #936b46;opacity:.88; }
+.zoo-map[data-theme="desert"] .map-sand::after { content:"";position:absolute;right:7%;bottom:12%;width:54%;height:8px;background:#704f37;clip-path:polygon(0 40%,18% 40%,18% 15%,46% 15%,46% 0,72% 0,72% 28%,100% 28%,100% 100%,0 100%);box-shadow:-54px -16px 0 #a1784e;opacity:.8; }
+.zoo-map[data-theme="desert"] .map-tree { z-index:6;width:8px;height:32px;background:#3d5835;box-shadow:inset -3px 0 #293b27; }
+.zoo-map[data-theme="desert"] .map-tree::before { left:-8px;bottom:9px;width:24px;height:20px;clip-path:polygon(0 4px,6px 4px,6px 12px,10px 12px,10px 0,15px 0,15px 8px,19px 8px,19px 3px,24px 3px,24px 13px,19px 13px,19px 16px,15px 16px,15px 20px,10px 20px,10px 17px,6px 17px,6px 14px,0 14px);background:#3d5835;box-shadow:inset -4px -3px #293b27,inset 3px 3px #5c7142; }
+.zoo-map[data-theme="desert"] .tree-a { left:10%;top:20%;transform:scale(.82); }.zoo-map[data-theme="desert"] .tree-b { right:10%;top:52%;transform:scale(1.08); }.zoo-map[data-theme="desert"] .tree-c { left:55%;bottom:5%;transform:scale(.72); }
+.zoo-map[data-theme="desert"] .map-rock { background:#6f5949; box-shadow:inset 4px 4px #927663,inset -5px -4px #4c3b32; }
+.zoo-map[data-theme="desert"] .rock-a { left:40%;bottom:9%; }.zoo-map[data-theme="desert"] .rock-b { right:47%;top:13%; }
+.zoo-map[data-theme="desert"] .empty-state { background:rgba(91,67,48,.79); }
+.zoo-map[data-theme="desert"]::before { content:"";position:absolute;z-index:1;left:5%;top:31%;width:38%;height:12%;pointer-events:none;background:#76583c;clip-path:polygon(0 48%,12% 48%,12% 24%,31% 24%,31% 0,57% 0,57% 22%,76% 22%,76% 43%,100% 43%,100% 100%,0 100%);box-shadow:0 7px #5c4433; }
+
+#creatures { position: absolute; inset: 0; z-index: 8; }
+.creature { position: absolute; z-index: 8; left: var(--x); top: var(--y); width: 92px; height: 72px; pointer-events:none; animation: roam var(--roam-speed) steps(7, end) infinite alternate; animation-delay: var(--delay); }
+.creature.active { z-index: 25; }
+.creature:hover, .creature:focus-within, .creature.asleep, .creature.egg { z-index: 20; animation-play-state: paused; }
+.creature.egg .pixel-sprite { animation: none; }
+.creature-button { position:absolute; left:50%; top:calc(43% + var(--hit-y)); display:block; width:var(--hit-w); height:var(--hit-h); padding:0; border:0; outline:0; transform:translate(-50%,-50%); background:transparent; cursor:pointer; pointer-events:auto; }
+.creature-button:focus-visible { box-shadow: inset 0 0 0 2px #efffd5, inset 0 0 0 5px var(--accent); }
+.sprite-stage { position:absolute; left:50%; top:calc(50% - var(--hit-y)); width:96px; height:72px; transform:translate(-50%,-50%); pointer-events:none; }
+.sprite-scale { display: block; width: 96px; height: 72px; transform: scale(var(--scale)) scaleX(var(--width-ratio)); transform-origin: 50% 72%; transition: transform 140ms steps(3, end); }
+.sprite-scale.egg-scale { transform: scale(var(--egg-scale)) scaleX(var(--width-ratio)); }
+.pixel-sprite { position: relative; display: block; width: 96px; height: 72px; filter: saturate(1.42) brightness(1.06) drop-shadow(2px 3px 0 rgba(5,12,9,.34)); animation: hop var(--hop-speed) steps(2,end) infinite; }
+.pixel-sprite::after { content: ""; position: absolute; z-index: 0; left: 18px; right: 14px; bottom: 2px; height: 4px; background: rgba(28,40,31,.3); }
+.part { position: absolute; z-index: 3; display: none; background: var(--accent); }
+.tail, .neck { z-index: 1; }
+.leg, .arm { z-index: 2; }
+.head, .snout { z-index: 6; }
+.wing { z-index: 4; }
+.eye { z-index: 7; width: 4px; height: 5px; background: #f7ffdf; box-shadow: inset -2px -2px #26342a; }
+.mark { display: none !important; }
+
+/* Adult silhouettes use small, deliberate stair steps: softer at a glance,
+   while every edge still lands on a hard pixel. */
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile) .body {
+  clip-path:polygon(4px 0,calc(100% - 6px) 0,calc(100% - 6px) 2px,calc(100% - 2px) 2px,calc(100% - 2px) 5px,100% 5px,100% calc(100% - 5px),calc(100% - 2px) calc(100% - 5px),calc(100% - 2px) calc(100% - 2px),calc(100% - 7px) calc(100% - 2px),calc(100% - 7px) 100%,5px 100%,5px calc(100% - 2px),2px calc(100% - 2px),2px calc(100% - 5px),0 calc(100% - 5px),0 5px,2px 5px,2px 2px,4px 2px);
+}
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile) .head {
+  clip-path:polygon(5px 0,calc(100% - 6px) 0,calc(100% - 6px) 2px,calc(100% - 2px) 2px,calc(100% - 2px) 5px,100% 5px,100% calc(100% - 7px),calc(100% - 2px) calc(100% - 7px),calc(100% - 2px) calc(100% - 4px),calc(100% - 5px) calc(100% - 4px),calc(100% - 5px) calc(100% - 2px),calc(100% - 9px) calc(100% - 2px),calc(100% - 9px) 100%,5px 100%,5px calc(100% - 2px),2px calc(100% - 2px),2px calc(100% - 5px),0 calc(100% - 5px),0 5px,2px 5px,2px 2px,5px 2px);
+}
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile) .snout {
+  clip-path:polygon(3px 0,100% 0,100% calc(100% - 4px),calc(100% - 2px) calc(100% - 4px),calc(100% - 2px) calc(100% - 2px),calc(100% - 5px) calc(100% - 2px),calc(100% - 5px) 100%,0 100%,0 3px,2px 3px,2px 1px,3px 1px);
+}
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile) .leg,
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile) .arm {
+  clip-path: none;
+}
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile) .tail.one {
+  clip-path: polygon(0 0,calc(100% - 8px) 0,calc(100% - 8px) 3px,calc(100% - 4px) 3px,calc(100% - 4px) 5px,100% 5px,100% 100%,0 100%);
+}
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile) .tail.two {
+  clip-path: polygon(0 0,calc(100% - 3px) 0,calc(100% - 3px) 2px,100% 2px,100% 100%,0 100%);
+}
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile) .neck {
+  clip-path:polygon(4px 0,100% 0,100% calc(100% - 5px),calc(100% - 2px) calc(100% - 5px),calc(100% - 2px) calc(100% - 2px),calc(100% - 5px) calc(100% - 2px),calc(100% - 5px) 100%,0 100%,0 5px,2px 5px,2px 2px,4px 2px);
+}
+
+.pixel-sprite[data-species="sauropod"] .body { display:block; left:35px; top:34px; width:42px; height:23px; }
+.pixel-sprite[data-species="sauropod"] .neck { display:block; left:30px; top:14px; width:11px; height:37px; }
+.pixel-sprite[data-species="sauropod"] .head { display:block; left:18px; top:11px; width:20px; height:14px; }
+.pixel-sprite[data-species="sauropod"] .snout { display:block; left:12px; top:16px; width:10px; height:8px; }
+.pixel-sprite[data-species="sauropod"] .tail.one { display:block; left:75px; top:39px; width:17px; height:9px; }
+.pixel-sprite[data-species="sauropod"] .tail.two { display:block; left:89px; top:43px; width:7px; height:5px; }
+.pixel-sprite[data-species="sauropod"] .leg { display:block; top:54px; width:7px; height:16px; }
+.pixel-sprite[data-species="sauropod"] .leg.one { left:39px; }.pixel-sprite[data-species="sauropod"] .leg.two { left:50px; }.pixel-sprite[data-species="sauropod"] .leg.three { left:63px; }.pixel-sprite[data-species="sauropod"] .leg.four { left:72px; }
+.pixel-sprite[data-species="sauropod"] .eye.one { display:block; left:24px; top:14px; }
+
+.pixel-sprite[data-species="trex"] .body { display:block; left:38px; top:33px; width:38px; height:25px; }
+.pixel-sprite[data-species="trex"] .head { display:block; left:20px; top:21px; width:28px; height:23px; }
+.pixel-sprite[data-species="trex"] .snout { display:block; left:7px; top:27px; width:19px; height:13px; }
+.pixel-sprite[data-species="trex"] .tail.one { display:block; left:74px; top:38px; width:18px; height:10px; }.pixel-sprite[data-species="trex"] .tail.two { display:block; left:90px; top:42px; width:6px; height:5px; }
+.pixel-sprite[data-species="trex"] .arm { display:block; top:42px; width:4px; height:11px; }.pixel-sprite[data-species="trex"] .arm.one { left:36px; }.pixel-sprite[data-species="trex"] .arm.two { left:44px; }
+.pixel-sprite[data-species="trex"] .leg.one,.pixel-sprite[data-species="trex"] .leg.two { display:block; top:55px; width:9px; height:16px; }.pixel-sprite[data-species="trex"] .leg.one { left:46px; }.pixel-sprite[data-species="trex"] .leg.two { left:65px; }
+.pixel-sprite[data-species="trex"] .eye.one { display:block; left:25px; top:26px; }
+
+.pixel-sprite[data-species="triceratops"] .body { display:block; left:32px; top:36px; width:44px; height:23px; }
+.pixel-sprite[data-species="triceratops"] .head { display:block; left:15px; top:30px; width:25px; height:25px; }
+.pixel-sprite[data-species="triceratops"] .snout { display:block; left:6px; top:42px; width:14px; height:11px; }
+.pixel-sprite[data-species="triceratops"] .wing.one { display:block; left:25px; top:27px; width:17px; height:28px; }
+.pixel-sprite[data-species="triceratops"] .horn { display:block; top:19px; width:4px; height:15px; background:var(--mark); }.pixel-sprite[data-species="triceratops"] .horn.one { left:15px; }.pixel-sprite[data-species="triceratops"] .horn.two { left:27px; }
+.pixel-sprite[data-species="triceratops"] .tail.one { display:block; left:74px; top:40px; width:18px; height:9px; }.pixel-sprite[data-species="triceratops"] .tail.two { display:block; left:89px; top:44px; width:7px; height:5px; }
+.pixel-sprite[data-species="triceratops"] .leg { display:block; top:55px; width:7px; height:16px; }.pixel-sprite[data-species="triceratops"] .leg.one { left:36px; }.pixel-sprite[data-species="triceratops"] .leg.two { left:47px; }.pixel-sprite[data-species="triceratops"] .leg.three { left:62px; }.pixel-sprite[data-species="triceratops"] .leg.four { left:71px; }
+.pixel-sprite[data-species="triceratops"] .eye.one { display:block; left:20px; top:37px; }
+
+.pixel-sprite[data-species="fox"] .body,.pixel-sprite[data-species="cat"] .body { display:block; left:27px; top:36px; width:47px; height:22px; }
+.pixel-sprite[data-species="fox"] .head,.pixel-sprite[data-species="cat"] .head { display:block; left:15px; top:29px; width:23px; height:21px; }
+.pixel-sprite[data-species="fox"] .snout { display:block; left:7px; top:40px; width:12px; height:8px; }.pixel-sprite[data-species="cat"] .snout { display:block; left:11px; top:41px; width:9px; height:6px; }
+.pixel-sprite[data-species="fox"] .ear,.pixel-sprite[data-species="cat"] .ear { display:block; top:20px; width:9px; height:14px; clip-path:polygon(0 100%,0 6px,3px 6px,3px 0,6px 0,6px 6px,9px 6px,9px 100%); }.pixel-sprite[data-species="fox"] .ear.one,.pixel-sprite[data-species="cat"] .ear.one { left:17px; }.pixel-sprite[data-species="fox"] .ear.two,.pixel-sprite[data-species="cat"] .ear.two { left:29px; }
+.pixel-sprite[data-species="fox"] .tail.one { display:block; left:71px; top:35px; width:20px; height:16px; }.pixel-sprite[data-species="fox"] .tail.two { display:block; left:86px; top:29px; width:10px; height:14px; background:var(--mark); }
+.pixel-sprite[data-species="cat"] .tail.one { display:block; left:72px; top:29px; width:8px; height:24px; }.pixel-sprite[data-species="cat"] .tail.two { display:block; left:77px; top:23px; width:15px; height:8px; }
+.pixel-sprite[data-species="fox"] .leg,.pixel-sprite[data-species="cat"] .leg { display:block; top:54px; width:6px; height:17px; }.pixel-sprite[data-species="fox"] .leg.one,.pixel-sprite[data-species="cat"] .leg.one { left:31px; }.pixel-sprite[data-species="fox"] .leg.two,.pixel-sprite[data-species="cat"] .leg.two { left:42px; }.pixel-sprite[data-species="fox"] .leg.three,.pixel-sprite[data-species="cat"] .leg.three { left:61px; }.pixel-sprite[data-species="fox"] .leg.four,.pixel-sprite[data-species="cat"] .leg.four { left:70px; }
+.pixel-sprite[data-species="fox"] .eye,.pixel-sprite[data-species="cat"] .eye { display:block; top:35px; }.pixel-sprite[data-species="fox"] .eye.one,.pixel-sprite[data-species="cat"] .eye.one { left:20px; }.pixel-sprite[data-species="fox"] .eye.two,.pixel-sprite[data-species="cat"] .eye.two { left:30px; }
+
+.pixel-sprite[data-species="duck"] .body { display:block; left:35px; top:34px; width:39px; height:29px; }
+.pixel-sprite[data-species="duck"] .head { display:block; left:20px; top:22px; width:29px; height:27px; }
+.pixel-sprite[data-species="duck"] .snout { display:block; left:5px; top:37px; width:20px; height:9px; background:var(--mark); }
+.pixel-sprite[data-species="duck"] .wing.one { display:block; left:46px; top:39px; width:22px; height:17px; background:var(--shade); }
+.pixel-sprite[data-species="duck"] .tail.one { display:block; left:71px; top:38px; width:14px; height:11px; }
+.pixel-sprite[data-species="duck"] .leg.one,.pixel-sprite[data-species="duck"] .leg.two { display:block; top:59px; width:5px; height:10px; background:var(--mark); }.pixel-sprite[data-species="duck"] .leg.one { left:46px; }.pixel-sprite[data-species="duck"] .leg.two { left:61px; }
+.pixel-sprite[data-species="duck"] .eye.one { display:block; left:28px; top:29px; }
+
+.pixel-sprite[data-species="elephant"] .body { display:block; left:34px; top:34px; width:44px; height:28px; }
+.pixel-sprite[data-species="elephant"] .head { display:block; left:18px; top:29px; width:27px; height:25px; }
+.pixel-sprite[data-species="elephant"] .snout { display:block; left:13px; top:42px; width:10px; height:25px; clip-path:polygon(0 0,100% 0,100% 82%,82% 82%,82% 100%,35% 100%,35% 91%,0 91%); }
+.pixel-sprite[data-species="elephant"] .ear.one { display:block; left:29px; top:27px; width:20px; height:23px; }
+.pixel-sprite[data-species="elephant"] .tail.one { display:block; left:77px; top:38px; width:5px; height:21px; }.pixel-sprite[data-species="elephant"] .tail.two { display:block; left:78px; top:56px; width:8px; height:6px; }
+.pixel-sprite[data-species="elephant"] .leg { display:block; top:57px; width:8px; height:15px; }.pixel-sprite[data-species="elephant"] .leg.one { left:38px; }.pixel-sprite[data-species="elephant"] .leg.two { left:50px; }.pixel-sprite[data-species="elephant"] .leg.three { left:65px; }.pixel-sprite[data-species="elephant"] .leg.four { left:73px; }
+.pixel-sprite[data-species="elephant"] .eye.one { display:block; left:23px; top:35px; }
+
+.pixel-sprite.phase-egg { transform:scale(1.38); transform-origin:50% 72%; filter:saturate(1.48) brightness(1.1) drop-shadow(2px 0 0 rgba(4,10,8,.72)) drop-shadow(-2px 0 0 rgba(4,10,8,.72)) drop-shadow(0 2px 0 rgba(4,10,8,.72)) drop-shadow(0 -2px 0 rgba(4,10,8,.72)); animation:none; }
+.pixel-sprite.phase-egg .part { display:none!important; }
+.pixel-sprite.phase-egg .body { display:block!important; left:30px; top:13px; width:36px; height:47px; clip-path:polygon(30% 0,70% 0,70% 5%,82% 5%,82% 12%,90% 12%,90% 22%,96% 22%,96% 78%,90% 78%,90% 88%,82% 88%,82% 95%,70% 95%,70% 100%,30% 100%,30% 96%,18% 96%,18% 90%,10% 90%,10% 80%,4% 80%,4% 22%,10% 22%,10% 12%,18% 12%,18% 5%,30% 5%); }
+.pixel-sprite.phase-egg .body::before { content:""; position:absolute; left:7px; top:12px; width:5px; height:5px; background:var(--mark); box-shadow:18px -2px var(--mark),11px 20px var(--mark),20px 27px var(--shade); }
+.pixel-sprite.phase-egg .body::after { content:""; position:absolute; left:15px; top:20px; width:3px; height:3px; background:var(--shade); box-shadow:3px 3px var(--shade),0 6px var(--shade),-3px 9px var(--shade); }
+.pixel-sprite.phase-egg::after,.pixel-sprite.phase-juvenile::after { display:none; }
+.pixel-sprite.phase-juvenile { transform:scale(1.08); transform-origin:50% 72%; filter:none; }
+.pixel-sprite.phase-juvenile .part { display:none!important; }
+.pixel-sprite.phase-juvenile .body { display:block!important; left:32px; top:34px; width:32px; height:25px; clip-path:polygon(5px 0,calc(100% - 6px) 0,calc(100% - 6px) 2px,calc(100% - 2px) 2px,calc(100% - 2px) 5px,100% 5px,100% calc(100% - 5px),calc(100% - 2px) calc(100% - 5px),calc(100% - 2px) calc(100% - 2px),calc(100% - 6px) calc(100% - 2px),calc(100% - 6px) 100%,5px 100%,5px calc(100% - 2px),2px calc(100% - 2px),2px calc(100% - 5px),0 calc(100% - 5px),0 5px,2px 5px,2px 2px,5px 2px); }
+.pixel-sprite.phase-juvenile .eye { display:block!important; top:41px; width:4px; height:5px; }.pixel-sprite.phase-juvenile .eye.one { left:40px; }.pixel-sprite.phase-juvenile .eye.two { left:53px; }
+
+/* Juveniles keep one rounded base and reveal only one or two species cues. */
+.pixel-sprite.phase-juvenile[data-species="sauropod"] .body { left:38px;top:35px;width:36px;height:25px; }
+.pixel-sprite.phase-juvenile[data-species="sauropod"] .neck { display:block!important;left:34px;top:24px;width:11px;height:27px;clip-path:polygon(2px 0,100% 0,100% 100%,0 100%,0 7px,2px 7px); }
+.pixel-sprite.phase-juvenile[data-species="sauropod"] .head { display:block!important;left:23px;top:20px;width:22px;height:14px;clip-path:polygon(0 2px,18px 2px,18px 4px,22px 4px,22px 10px,18px 10px,18px 12px,0 12px); }
+.pixel-sprite.phase-juvenile[data-species="sauropod"] .eye.one { left:29px;top:23px; }
+.pixel-sprite.phase-juvenile[data-species="sauropod"] .eye.two { display:none!important; }
+
+.pixel-sprite.phase-juvenile[data-species="trex"] .body { left:39px;top:35px;width:35px;height:25px; }
+.pixel-sprite.phase-juvenile[data-species="trex"] .head { display:block!important;left:22px;top:27px;width:30px;height:23px;clip-path:polygon(3px 0,27px 0,27px 4px,30px 4px,30px 15px,23px 15px,23px 19px,17px 19px,17px 23px,3px 23px,3px 19px,0 19px,0 4px,3px 4px); }
+.pixel-sprite.phase-juvenile[data-species="trex"] .arm.one { display:block!important;left:49px;top:44px;width:13px;height:5px;clip-path:polygon(0 0,100% 0,100% 3px,9px 3px,9px 5px,6px 5px,6px 3px,0 3px); }
+.pixel-sprite.phase-juvenile[data-species="trex"] .arm.two { display:block!important;left:52px;top:51px;width:11px;height:4px;background:var(--shade); }
+.pixel-sprite.phase-juvenile[data-species="trex"] .eye.one { left:29px;top:32px; }
+.pixel-sprite.phase-juvenile[data-species="trex"] .eye.two { display:none!important; }
+
+.pixel-sprite.phase-juvenile[data-species="triceratops"] .body { left:40px;top:36px;width:34px;height:24px; }
+.pixel-sprite.phase-juvenile[data-species="triceratops"] .wing.one { display:block!important;left:30px;top:28px;width:22px;height:27px;background:var(--shade);clip-path:polygon(5px 0,17px 0,17px 3px,22px 3px,22px 24px,17px 24px,17px 27px,5px 27px,5px 24px,0 24px,0 3px,5px 3px); }
+.pixel-sprite.phase-juvenile[data-species="triceratops"] .head { display:block!important;left:21px;top:33px;width:27px;height:21px;clip-path:polygon(3px 0,22px 0,22px 3px,27px 3px,27px 15px,22px 15px,22px 18px,18px 18px,18px 21px,3px 21px,3px 18px,0 18px,0 3px,3px 3px); }
+.pixel-sprite.phase-juvenile[data-species="triceratops"] .horn { display:block!important;top:24px;width:6px;height:12px;background:var(--mark);clip-path:polygon(3px 0,6px 12px,0 12px); }
+.pixel-sprite.phase-juvenile[data-species="triceratops"] .horn.one { left:24px; }
+.pixel-sprite.phase-juvenile[data-species="triceratops"] .horn.two { left:35px;top:25px;height:11px; }
+.pixel-sprite.phase-juvenile[data-species="triceratops"] .eye.one { left:28px;top:38px; }
+.pixel-sprite.phase-juvenile[data-species="triceratops"] .eye.two { display:none!important; }
+
+.pixel-sprite.phase-juvenile[data-species="cat"] .body { left:31px;top:31px;width:38px;height:30px; }
+.pixel-sprite.phase-juvenile[data-species="cat"] .ear { display:block!important;top:22px;width:12px;height:15px; }
+.pixel-sprite.phase-juvenile[data-species="cat"] .ear.one { left:34px;clip-path:polygon(0 100%,0 3px,2px 3px,2px 0,12px 12px,12px 100%); }
+.pixel-sprite.phase-juvenile[data-species="cat"] .ear.two { left:54px;clip-path:polygon(0 12px,10px 0,10px 3px,12px 3px,12px 100%,0 100%); }
+.pixel-sprite.phase-juvenile[data-species="cat"] .eye { top:38px; }
+.pixel-sprite.phase-juvenile[data-species="cat"] .eye.one { left:39px; }
+.pixel-sprite.phase-juvenile[data-species="cat"] .eye.two { left:56px; }
+
+.pixel-sprite.phase-juvenile[data-species="fox"] .body { left:32px;top:34px;width:36px;height:27px; }
+.pixel-sprite.phase-juvenile[data-species="fox"] .ear { display:block!important;top:14px;width:14px;height:27px; }
+.pixel-sprite.phase-juvenile[data-species="fox"] .ear.one { left:31px;clip-path:polygon(5px 0,10px 0,14px 27px,0 27px); }
+.pixel-sprite.phase-juvenile[data-species="fox"] .ear.two { left:55px;clip-path:polygon(4px 0,9px 0,14px 27px,0 27px); }
+.pixel-sprite.phase-juvenile[data-species="fox"] .snout { display:block!important;left:24px;top:41px;width:14px;height:8px;clip-path:polygon(0 2px,10px 2px,10px 0,14px 0,14px 6px,10px 6px,10px 8px,0 8px); }
+.pixel-sprite.phase-juvenile[data-species="fox"] .eye { top:39px; }
+.pixel-sprite.phase-juvenile[data-species="fox"] .eye.one { left:38px; }
+.pixel-sprite.phase-juvenile[data-species="fox"] .eye.two { left:55px; }
+
+.pixel-sprite.phase-juvenile[data-species="duck"] .body { left:36px;top:36px;width:34px;height:25px; }
+.pixel-sprite.phase-juvenile[data-species="duck"] .head { display:block!important;left:24px;top:27px;width:27px;height:24px; }
+.pixel-sprite.phase-juvenile[data-species="duck"] .snout { display:block!important;left:12px;top:40px;width:16px;height:7px;background:var(--mark);clip-path:polygon(0 0,16px 0,16px 5px,12px 5px,12px 7px,0 7px); }
+.pixel-sprite.phase-juvenile[data-species="duck"] .wing.one { display:block!important;left:47px;top:42px;width:17px;height:13px;background:var(--shade);clip-path:polygon(3px 0,17px 0,17px 9px,13px 9px,13px 13px,3px 13px,3px 10px,0 10px,0 3px,3px 3px); }
+.pixel-sprite.phase-juvenile[data-species="duck"] .eye.one { left:31px;top:33px; }
+.pixel-sprite.phase-juvenile[data-species="duck"] .eye.two { display:none!important; }
+
+.pixel-sprite.phase-juvenile[data-species="elephant"] .body { left:39px;top:35px;width:34px;height:26px; }
+.pixel-sprite.phase-juvenile[data-species="elephant"] .head { display:block!important;left:22px;top:31px;width:29px;height:24px;clip-path:polygon(3px 0,26px 0,26px 3px,29px 3px,29px 21px,26px 21px,26px 24px,3px 24px,3px 21px,0 21px,0 3px,3px 3px); }
+.pixel-sprite.phase-juvenile[data-species="elephant"] .ear.one { display:block!important;left:37px;top:29px;width:18px;height:23px;background:var(--shade);clip-path:polygon(3px 0,15px 0,15px 3px,18px 3px,18px 20px,15px 20px,15px 23px,3px 23px,3px 20px,0 20px,0 3px,3px 3px); }
+.pixel-sprite.phase-juvenile[data-species="elephant"] .snout { display:block!important;left:18px;top:45px;width:9px;height:17px;clip-path:polygon(0 0,9px 0,9px 13px,7px 13px,7px 17px,2px 17px,2px 15px,0 15px); }
+.pixel-sprite.phase-juvenile[data-species="elephant"] .eye.one { left:28px;top:36px; }
+.pixel-sprite.phase-juvenile[data-species="elephant"] .eye.two { display:none!important; }
+.pixel-sprite.sleeping { transform:translateY(10px) rotate(-4deg) scaleY(.86); transform-origin:50% 80%; animation:sleep 3.8s steps(2,end) infinite; }
+.pixel-sprite.sleeping .eye { height:2px!important; box-shadow:none; background:#183027; }
+.sleep-puff { position:absolute; z-index:9; display:none; right:7px; top:8px; color:#eaffdf; font:800 10px/1 monospace; }
+.pixel-sprite.sleeping .sleep-puff { display:block; animation:puff 2.2s steps(2,end) infinite; }
+
+/* Chibi pixel pass: bigger faces, compact bodies and one quiet volume patch.
+   Growth, horizontal body ratio and movement remain on the outer scale wrappers. */
+.pixel-sprite:not(.phase-egg) {
+  /* One outline is calculated from the merged alpha of every part. This makes
+     the animal read as a single sprite instead of a stack of outlined pieces. */
+  --pixel-outline:color-mix(in srgb,var(--shade) 34%,#16241c);
+  filter:
+    saturate(1.34)
+    brightness(1.05)
+    drop-shadow(1px 0 0 var(--pixel-outline))
+    drop-shadow(-1px 0 0 var(--pixel-outline))
+    drop-shadow(0 -1px 0 var(--pixel-outline))
+    drop-shadow(0 2px 0 var(--pixel-outline))
+    drop-shadow(2px 3px 0 rgba(8,18,13,.28));
+}
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile) .belly {
+  z-index:4;
+  display:block;
+  background:var(--shade);
+  clip-path:polygon(3px 0,100% 0,100% calc(100% - 3px),calc(100% - 3px) calc(100% - 3px),calc(100% - 3px) 100%,0 100%,0 3px,3px 3px);
+}
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile) .leg::after {
+  content:"";
+  position:absolute;
+  left:-2px;
+  bottom:0;
+  width:calc(100% + 4px);
+  height:4px;
+  background:inherit;
+}
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile) .leg::before,
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile) .arm::before {
+  content:"";
+  position:absolute;
+  left:0;
+  top:-2px;
+  width:100%;
+  height:3px;
+  background:inherit;
+}
+
+/* Sauropod — compact body, oversized head and a shorter friendly neck. */
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="sauropod"] .body { left:37px;top:35px;width:43px;height:27px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="sauropod"] .belly { left:46px;top:53px;width:26px;height:7px;clip-path:polygon(3px 0,23px 0,23px 3px,26px 3px,26px 7px,0 7px,0 3px,3px 3px); }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="sauropod"] .neck { left:31px;top:17px;width:13px;height:38px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="sauropod"] .head { left:15px;top:10px;width:25px;height:18px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="sauropod"] .snout { left:7px;top:17px;width:13px;height:9px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="sauropod"] .tail.one { left:77px;top:40px;width:15px;height:11px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="sauropod"] .tail.two { left:89px;top:46px;width:7px;height:5px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="sauropod"] .leg { top:57px;width:8px;height:14px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="sauropod"] .leg.one { left:41px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="sauropod"] .leg.two { left:52px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="sauropod"] .leg.three { left:66px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="sauropod"] .leg.four { left:75px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="sauropod"] .eye.one { left:23px;top:15px;width:5px;height:6px; }
+
+/* T-rex — the closest match to the earlier cute example. */
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="trex"] .body { left:38px;top:35px;width:43px;height:28px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="trex"] .belly { left:39px;top:44px;width:12px;height:13px;clip-path:polygon(0 0,9px 0,9px 3px,12px 3px,12px 10px,9px 10px,9px 13px,3px 13px,3px 10px,0 10px); }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="trex"] .head { left:15px;top:17px;width:34px;height:29px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="trex"] .snout { left:3px;top:28px;width:21px;height:14px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="trex"] .tail.one { left:78px;top:40px;width:14px;height:11px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="trex"] .tail.two { left:89px;top:46px;width:7px;height:5px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="trex"] .arm { z-index:5;top:43px;width:5px;height:9px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="trex"] .arm.one { left:34px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="trex"] .arm.two { left:43px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="trex"] .leg.one,
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="trex"] .leg.two { top:58px;width:10px;height:13px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="trex"] .leg.one { left:47px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="trex"] .leg.two { left:68px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="trex"] .eye.one { left:24px;top:24px;width:5px;height:6px; }
+
+/* Triceratops — large face plate and short sturdy feet. */
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="triceratops"] .body { left:38px;top:37px;width:43px;height:26px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="triceratops"] .belly { left:60px;top:44px;width:10px;height:10px;clip-path:polygon(3px 0,10px 0,10px 7px,7px 7px,7px 10px,0 10px,0 3px,3px 3px); }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="triceratops"] .head { left:12px;top:29px;width:31px;height:29px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="triceratops"] .snout { left:2px;top:43px;width:16px;height:12px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="triceratops"] .wing.one { left:28px;top:25px;width:20px;height:32px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="triceratops"] .horn { top:19px;width:5px;height:13px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="triceratops"] .horn.one { left:13px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="triceratops"] .horn.two { left:28px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="triceratops"] .tail.one { left:78px;top:42px;width:14px;height:10px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="triceratops"] .tail.two { left:89px;top:47px;width:7px;height:5px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="triceratops"] .leg { top:58px;width:8px;height:13px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="triceratops"] .leg.one { left:40px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="triceratops"] .leg.two { left:51px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="triceratops"] .leg.three { left:67px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="triceratops"] .leg.four { left:76px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="triceratops"] .eye.one { left:21px;top:38px;width:5px;height:6px; }
+
+/* Fox — tall ears, a narrow side profile, longer legs and a bushy raised tail. */
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="fox"] .body { left:34px;top:40px;width:48px;height:21px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="fox"] .belly { display:none; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="fox"] .head { left:12px;top:31px;width:29px;height:23px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="fox"] .snout { left:0;top:42px;width:18px;height:9px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="fox"] .ear { top:9px;width:11px;height:27px;clip-path:polygon(0 100%,0 8px,3px 8px,3px 0,8px 0,8px 8px,11px 8px,11px 100%); }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="fox"] .ear.one { left:13px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="fox"] .ear.two { left:29px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="fox"] .tail.one { left:76px;top:31px;width:16px;height:22px;clip-path:polygon(0 8px,5px 8px,5px 3px,10px 3px,10px 0,16px 0,16px 15px,12px 15px,12px 19px,7px 19px,7px 22px,0 22px); }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="fox"] .tail.two { left:86px;top:20px;width:10px;height:16px;clip-path:polygon(0 5px,3px 5px,3px 0,10px 0,10px 12px,7px 12px,7px 16px,0 16px); }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="fox"] .leg { top:56px;width:6px;height:15px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="fox"] .leg.one { left:39px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="fox"] .leg.two { left:50px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="fox"] .leg.three { left:69px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="fox"] .leg.four { left:78px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="fox"] .eye.one { top:38px;left:20px;width:5px;height:6px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="fox"] .eye.two { display:none; }
+
+/* Cat — broad round face, short paws and a thin tail with a square kink. */
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="cat"] .body { left:36px;top:38px;width:42px;height:27px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="cat"] .belly { left:39px;top:45px;width:9px;height:13px;clip-path:polygon(0 0,9px 0,9px 10px,6px 10px,6px 13px,3px 13px,3px 10px,0 10px); }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="cat"] .head { left:12px;top:27px;width:32px;height:30px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="cat"] .snout { left:7px;top:44px;width:11px;height:7px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="cat"] .ear { top:18px;width:9px;height:14px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="cat"] .ear.one { left:15px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="cat"] .ear.two { left:31px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="cat"] .tail.one { left:77px;top:31px;width:8px;height:27px;clip-path:polygon(0 0,7px 0,7px 20px,8px 20px,8px 27px,2px 27px,2px 23px,0 23px); }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="cat"] .tail.two { left:79px;top:22px;width:14px;height:9px;clip-path:polygon(0 3px,4px 3px,4px 0,14px 0,14px 8px,7px 8px,7px 9px,0 9px); }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="cat"] .leg { top:59px;width:7px;height:12px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="cat"] .leg.one { left:40px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="cat"] .leg.two { left:51px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="cat"] .leg.three { left:67px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="cat"] .leg.four { left:75px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="cat"] .eye { top:37px;width:5px;height:6px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="cat"] .eye.one { left:20px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="cat"] .eye.two { left:34px; }
+
+/* Duck — low side profile, flat bill and one folded wing. */
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="duck"] .body { left:36px;top:36px;width:42px;height:27px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="duck"] .belly { left:48px;top:54px;width:24px;height:7px;clip-path:polygon(3px 0,24px 0,24px 4px,20px 4px,20px 7px,0 7px,0 3px,3px 3px); }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="duck"] .head { left:18px;top:20px;width:31px;height:29px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="duck"] .snout { left:1px;top:37px;width:22px;height:10px;background:var(--mark);clip-path:polygon(3px 0,22px 0,22px 7px,17px 7px,17px 10px,0 10px,0 3px,3px 3px); }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="duck"] .wing.one { left:46px;top:40px;width:25px;height:17px;background:var(--shade);clip-path:polygon(4px 0,25px 0,25px 10px,21px 10px,21px 14px,16px 14px,16px 17px,4px 17px,4px 14px,0 14px,0 4px,4px 4px); }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="duck"] .tail.one { left:76px;top:39px;width:14px;height:11px;clip-path:polygon(0 3px,6px 3px,6px 0,14px 0,14px 8px,9px 8px,9px 11px,0 11px); }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="duck"] .leg.one,
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="duck"] .leg.two { top:59px;width:5px;height:10px;background:var(--mark); }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="duck"] .leg.one { left:47px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="duck"] .leg.two { left:63px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="duck"] .leg::after { left:-3px;width:11px;height:4px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="duck"] .eye.one { left:28px;top:28px;width:5px;height:6px; }
+
+/* Elephant — large head and ear, short legs, compact body. */
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="elephant"] .body { left:39px;top:36px;width:44px;height:28px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="elephant"] .belly { left:52px;top:56px;width:22px;height:6px;clip-path:polygon(3px 0,22px 0,22px 6px,0 6px,0 3px,3px 3px); }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="elephant"] .head { left:13px;top:27px;width:33px;height:29px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="elephant"] .snout { left:7px;top:43px;width:11px;height:23px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="elephant"] .ear.one { left:29px;top:24px;width:23px;height:27px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="elephant"] .tail.one { left:81px;top:41px;width:5px;height:18px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="elephant"] .tail.two { left:81px;top:56px;width:8px;height:6px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="elephant"] .leg { top:59px;width:9px;height:12px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="elephant"] .leg.one { left:43px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="elephant"] .leg.two { left:55px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="elephant"] .leg.three { left:70px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="elephant"] .leg.four { left:79px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="elephant"] .eye.one { left:21px;top:35px;width:5px;height:6px; }
+
+/* Restrained detail pass: keep the old silhouettes and describe each animal
+   with a handful of hard-edged colour clusters. */
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile) {
+  --pixel-light:color-mix(in srgb,var(--accent) 72%,#fff4c2);
+  --pixel-dark:color-mix(in srgb,var(--shade) 80%,#17241e);
+}
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile) .body::before {
+  content:"";
+  position:absolute;
+  left:7px;
+  top:4px;
+  width:12px;
+  height:3px;
+  background:var(--pixel-light);
+  box-shadow:3px 3px var(--pixel-light);
+  opacity:.72;
+}
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile) .body::after {
+  content:"";
+  position:absolute;
+  right:4px;
+  bottom:3px;
+  width:13px;
+  height:3px;
+  background:var(--pixel-dark);
+  opacity:.58;
+}
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile) .eye::before {
+  content:"";
+  position:absolute;
+  left:1px;
+  top:1px;
+  width:2px;
+  height:2px;
+  background:#fffde7;
+}
+
+/* Sauropod: two broad flank spots echo the long body without filling it. */
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="sauropod"] .mark {
+  z-index:5;
+  display:block!important;
+  background:var(--pixel-dark);
+  opacity:.58;
+}
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="sauropod"] .mark.one { left:54px;top:40px;width:6px;height:5px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="sauropod"] .mark.two { left:65px;top:44px;width:5px;height:4px; }
+
+/* T-rex: a short jaw seam and three square teeth. */
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="trex"] .snout::before {
+  content:"";
+  position:absolute;
+  left:3px;
+  right:2px;
+  bottom:4px;
+  height:2px;
+  background:var(--pixel-dark);
+  opacity:.68;
+}
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="trex"] .snout::after {
+  content:"";
+  position:absolute;
+  left:6px;
+  bottom:1px;
+  width:3px;
+  height:3px;
+  background:#fff4d5;
+  box-shadow:6px 0 #fff4d5,12px 0 #fff4d5;
+}
+
+/* Triceratops: a lighter rim makes the face plate read at a glance. */
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="triceratops"] .wing.one::before {
+  content:"";
+  position:absolute;
+  left:4px;
+  top:4px;
+  width:4px;
+  height:17px;
+  background:var(--pixel-light);
+  box-shadow:4px -1px var(--pixel-light);
+  opacity:.62;
+}
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="triceratops"] .horn { box-shadow:inset -2px 0 var(--pixel-dark); }
+
+/* Cat: two small back stripes, kept clear of the face and tail. */
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="cat"] .mark {
+  z-index:5;
+  display:block!important;
+  width:4px;
+  height:8px;
+  background:var(--pixel-dark);
+  opacity:.58;
+}
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="cat"] .mark.one { left:53px;top:38px; }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="cat"] .mark.two { left:64px;top:38px;height:6px; }
+
+/* Fox: pale tail tip and dark inner ears carry most of the identity. */
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="fox"] .tail.two { background:var(--pixel-light); }
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="fox"] .ear::after {
+  content:"";
+  position:absolute;
+  left:3px;
+  top:7px;
+  width:5px;
+  height:10px;
+  background:var(--pixel-dark);
+  opacity:.72;
+}
+
+/* Duck: bill seam, compact wing bars and webbed square feet. */
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="duck"] .snout::after {
+  content:"";
+  position:absolute;
+  left:3px;
+  right:2px;
+  bottom:3px;
+  height:2px;
+  background:color-mix(in srgb,var(--mark) 68%,#442b20);
+}
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="duck"] .wing.one::after {
+  content:"";
+  position:absolute;
+  left:7px;
+  top:5px;
+  width:11px;
+  height:3px;
+  background:var(--pixel-light);
+  box-shadow:4px 4px var(--pixel-dark);
+  opacity:.66;
+}
+
+/* Elephant: one inset ear plane and a tiny ivory tusk. */
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="elephant"] .ear.one {
+  background:var(--shade);
+  box-shadow:inset 5px 4px var(--pixel-light),inset -4px -4px var(--pixel-dark);
+}
+.pixel-sprite:not(.phase-egg):not(.phase-juvenile)[data-species="elephant"] .head::after {
+  content:"";
+  position:absolute;
+  left:2px;
+  bottom:2px;
+  width:4px;
+  height:7px;
+  background:#fff0c9;
+  clip-path:polygon(0 0,100% 0,100% 4px,2px 4px,2px 7px,0 7px);
+}
+
+/* Finished artwork supplies its own outline; only the outer wrapper grows. */
+.pixel-sprite.finished-sprite { filter:none; }
+.finished-sprite svg { position:absolute;left:8px;top:0;width:80px;height:72px;image-rendering:pixelated; }
+.finished-sprite.phase-juvenile svg { transform:scale(.7);transform-origin:50% 92%; }
+.finished-sprite .sprite-eye { transform-box:fill-box;transform-origin:center bottom; }
+.finished-sprite.drowsy .sprite-eye { transform:scaleY(var(--drowsy-eye-scale)); }
+.finished-sprite.sleeping .sprite-eye { transform:scaleY(.33); }
+
+/* From 10 to 35 idle minutes the animal visibly droops before falling asleep. */
+.pixel-sprite.drowsy:not(.phase-juvenile) {
+  transform:translateY(var(--drowsy-drop)) rotate(var(--drowsy-tilt));
+  transform-origin:50% 80%;
+}
+.pixel-sprite.drowsy.phase-juvenile {
+  transform:translateY(var(--drowsy-drop)) rotate(var(--drowsy-tilt)) scale(1.08);
+  transform-origin:50% 72%;
+}
+.pixel-sprite.drowsy .eye {
+  transform:scaleY(var(--drowsy-eye-scale));
+  transform-origin:50% 100%;
+}
+
+.creature-name { position:absolute; left:50%; bottom:var(--label-bottom); z-index:12; max-width:120px; padding:3px 5px; transform:translateX(-50%); background:rgba(18,32,25,.92); color:#efffd8; font:700 8px/1.15 Verdana,"Malgun Gothic",sans-serif; letter-spacing:-.01em; white-space:nowrap; opacity:0; }
+.creature:hover .creature-name,.creature:focus-within .creature-name { opacity:1; }
+.creature.active .creature-name { color:#fff; }
+
+.empty-state { position:absolute; inset:0; z-index:20; display:grid; place-content:center; gap:6px; background:rgba(74,96,67,.72); text-align:center; }.empty-state[hidden] { display:none; }.empty-state b { font-size:12px; }.empty-state span { color:#d0ddc3; font-size:9px; }
+.observer { height:64px; margin-top:6px; padding:2px 6px; border:1px solid #333; background:#080808; display:grid; grid-template-columns:32px minmax(0,1fr) 24px; gap:5px; align-items:center; }
+.observed-site { min-width:0; justify-content:center; }.observed-site img { width:26px; height:26px; padding:0; flex:0 0 auto; background:transparent; image-rendering:auto; }
+.observer-copy { min-width:0; align-self:stretch; display:flex; flex-direction:column; justify-content:center; gap:2px; overflow:hidden; }
+.observer-title { min-width:0; display:flex; align-items:baseline; gap:5px; overflow:hidden; }
+.observer-copy h2 { min-width:0; margin:0; overflow:hidden; color:#eff8ec; font-size:10px; line-height:1.1; text-overflow:ellipsis; white-space:nowrap; flex:0 1 auto; }
+.observer-title span { min-width:0; overflow:hidden; color:#999; font-size:8px; line-height:1; text-overflow:ellipsis; white-space:nowrap; flex:1 1 auto; }
+.observer-copy p { margin:0; overflow:hidden; color:#c8c8c8; font-size:10px; line-height:1.25; display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:3; }
+.observer-tools { display:flex; align-items:center; justify-content:flex-end; }
+.observer-tools button { display:grid; place-items:center; width:22px; height:22px; padding:0; border:1px solid #555; background:#111; color:#fff; font-size:14px; cursor:pointer; }
+.observer-tools button:hover,.observer-tools button:focus-visible { border-color:#fff; outline:0; }
+.observer-tools button:disabled { opacity:.45; cursor:wait; }
+.sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+footer { justify-content:space-between; height:14px; padding:0 2px; color:#777; font:7px/1 monospace; } footer b { color:#aaa; }
+
+@keyframes roam { 0% { transform:translate(0,0); } 38% { transform:translate(var(--dx),calc(var(--dy) * -1)); } 70% { transform:translate(calc(var(--dx) * -.45),var(--dy)); } 100% { transform:translate(calc(var(--dx) * .65),calc(var(--dy) * -.45)); } }
+@keyframes hop { 0%,100% { margin-top:2px; } 50% { margin-top:-2px; } }
+@keyframes sleep { 0%,100% { margin-top:3px; } 50% { margin-top:5px; } }
+@keyframes puff { 0% { opacity:0; transform:translate(0,3px); } 45% { opacity:1; } 100% { opacity:0; transform:translate(5px,-5px); } }
+/* Quiet tile habitat; keep all popup controls and observer layout intact. */
+.zoo-map[data-theme="meadow"] { background:#85a96b;box-shadow:inset 0 0 0 2px #597c4c; }
+.zoo-map[data-theme="meadow"] .map-rock,
+.zoo-map[data-theme="meadow"] .map-sand,
+.zoo-map[data-theme="meadow"] .path-branch { display:none; }
+.zoo-map[data-theme="meadow"] .path-main { left:auto;right:0;top:0;width:74px;height:54px;transform:none;background:#dfce91;box-shadow:none;clip-path:polygon(0 0,26% 0,26% 18%,42% 18%,42% 36%,58% 36%,58% 54%,78% 54%,78% 72%,100% 72%,100% 100%,65% 100%,65% 82%,45% 82%,45% 64%,29% 64%,29% 46%,13% 46%,13% 28%,0 28%); }
+.zoo-map[data-theme="meadow"] .map-water { left:0;top:auto;bottom:0;width:77px;height:43px;background:#589cbe;box-shadow:inset 0 4px #93c9d2;clip-path:polygon(0 0,35% 0,35% 15%,55% 15%,55% 32%,74% 32%,74% 53%,88% 53%,88% 74%,100% 74%,100% 100%,0 100%); }
+.zoo-map[data-theme="meadow"] .map-water i { background:#a9d7df;height:2px;width:10px; }
+.zoo-map[data-theme="meadow"] .map-tree { width:6px;height:12px;background:#8c7346;box-shadow:inset -2px 0 #594c32; }
+.zoo-map[data-theme="meadow"] .map-tree::before { left:-8px;bottom:8px;width:23px;height:25px;background:#4e794b;box-shadow:inset -4px -5px #315e40,inset 4px 4px #83a64e;clip-path:polygon(8px 0,15px 0,15px 3px,19px 3px,19px 6px,23px 6px,23px 18px,20px 18px,20px 22px,15px 22px,15px 25px,7px 25px,7px 22px,3px 22px,3px 18px,0 18px,0 7px,4px 7px,4px 3px,8px 3px); }
+.zoo-map[data-theme="meadow"] .tree-a { left:16px;top:30px;bottom:auto;transform:none; }
+.zoo-map[data-theme="meadow"] .tree-b { left:auto;right:23px;top:29px;bottom:auto;transform:none; }
+.zoo-map[data-theme="meadow"] .tree-c { left:auto;right:12px;top:auto;bottom:43px;transform:scale(.8); }
+.zoo-map[data-theme="siberia"] { background:#a5bfc1; }
+.zoo-map[data-theme="desert"] { background:#b99a70; }
+.zoo-map[data-theme="siberia"]::before,.zoo-map[data-theme="desert"]::before { display:none; }
+
+/* Both animations share duration/delay: face the direction of travel and rest
+   at each end. Labels and the sleep indicator never flip. */
+.creature { animation:pixel-walk var(--roam-speed) linear infinite;animation-delay:var(--delay); }
+.creature.egg,.creature.asleep { animation:none; }
+.pixel-sprite.finished-sprite { animation:none;margin-top:0; }
+.sprite-facing { position:absolute;inset:0;animation:walk-facing var(--roam-speed) steps(1,end) infinite;animation-delay:var(--delay); }
+.creature:hover,.creature:focus-within,.creature:hover .sprite-facing,.creature:focus-within .sprite-facing { animation-play-state:paused; }
+.finished-sprite.sleeping { transform:translateY(5px); }
+.finished-sprite.sleeping .sprite-facing { animation:none; }
+.finished-sprite[data-species="elephant"] { --stride:0px; }
+.finished-sprite { --stride:1px; }
+@keyframes pixel-walk {
+  0% { transform:translate(0,0);animation-timing-function:steps(12,end); }
+  30%,50% { transform:translate(var(--dx),calc(-1 * var(--dy))); }
+  50% { animation-timing-function:steps(12,end); }
+  80%,100% { transform:translate(0,0); }
+}
+@keyframes walk-facing {
+  0%,10%,20% { transform:translateY(0) scaleX(-1); }
+  5%,15%,25% { transform:translateY(calc(-1 * var(--stride))) scaleX(-1); }
+  30%,49.99% { transform:translateY(0) scaleX(-1); }
+  50%,60%,70%,80%,100% { transform:translateY(0) scaleX(1); }
+  55%,65%,75% { transform:translateY(calc(-1 * var(--stride))) scaleX(1); }
+}
+@media (prefers-reduced-motion:reduce) { .creature,.pixel-sprite,.sprite-facing,.sleep-puff { animation:none!important; } }
