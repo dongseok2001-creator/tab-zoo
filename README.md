@@ -75,8 +75,6 @@ npm test                    # 확장 프로그램 테스트 (Node.js 22+, npm in
 npm run package:extension   # 웹스토어용 zip을 outputs/에 생성 (Windows PowerShell 전용)
 ```
 
-함께 개발하는 방법, 코드 구조, 새 동물·맵 추가법은 [CONTRIBUTING.md](CONTRIBUTING.md)에 있습니다.
-
 ## 그림 출처
 
 동물 그림은 AI 이미지 생성 도구로 만든 뒤 잘라내기와 색 입히기를 더했습니다. 생성 과정과 프롬프트는 [ARTWORK.md](extension/assets/ARTWORK.md)에 기록되어 있습니다.
