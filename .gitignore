@@ -11,7 +11,7 @@ Thumbs.db
 .env*
 *.pem
 
-# Local leftovers from the archived web prototype (see archive/behavior-lab branch)
+# Local leftovers from the archived web prototype
 /node_modules/
 /.npm-cache/
 /.next/

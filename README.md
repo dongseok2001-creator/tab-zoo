@@ -68,8 +68,6 @@ design-archive/   이전 디자인 버전 (각각 단독으로 로드 가능)
 docs/             README 이미지
 ```
 
-초기에 성장 규칙을 실험하던 웹 프로토타입(Behavior Lab)은 [`archive/behavior-lab`](../../tree/archive/behavior-lab) 브랜치에 보관되어 있습니다.
-
 ## 개발
 
 ```bash
